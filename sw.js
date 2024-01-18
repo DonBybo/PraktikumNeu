@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-pwa-cache-v1';
+const CACHE_NAME = 'my-pwa-cache-v2';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -9,7 +9,7 @@ const urlsToCache = [
 
 // Installationsereignis für den Service Worker
 self.addEventListener('install', (event) => {
-    console.log('Service Worker installed.');
+    console.log('Service Worker installing...');
 
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -22,7 +22,7 @@ self.addEventListener('install', (event) => {
 
 // Aktivierung des Service Workers
 self.addEventListener('activate', (event) => {
-    console.log('Service Worker activated.');
+    console.log('Service Worker activating...');
 
     event.waitUntil(
         caches.keys().then((cacheNames) => {
@@ -40,10 +40,31 @@ self.addEventListener('activate', (event) => {
 
 // Fetch-Ereignis für den Service Worker
 self.addEventListener('fetch', (event) => {
+    console.log('Service Worker fetching...');
+
     event.respondWith(
         caches.match(event.request)
             .then((response) => {
                 return response || fetch(event.request);
             })
     );
+});
+
+// Neuinstallation des Service Workers
+self.addEventListener('install', (event) => {
+    console.log('New Service Worker installed.');
+
+    // Aktivierung des neuen Service Workers
+    event.waitUntil(
+        self.skipWaiting()
+            .then(() => {
+                console.log('New Service Worker activating...');
+                return self.clients.claim();
+            })
+    );
+});
+
+// Aktivierung des Service Workers
+self.addEventListener('activate', (event) => {
+    console.log('New Service Worker activated.');
 });
