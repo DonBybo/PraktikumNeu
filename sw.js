@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-pwa-cache-v2';
+const CACHE_NAME = 'my-pwa-cache-v3'; // Ändere die Versionsnummer
 const urlsToCache = [
     '/',
     '/index.html',
@@ -7,7 +7,7 @@ const urlsToCache = [
     '/icon.png'
 ];
 
-// Installationsereignis für den Service Worker
+// Installation des Service Workers
 self.addEventListener('install', (event) => {
     console.log('Service Worker installing...');
 
